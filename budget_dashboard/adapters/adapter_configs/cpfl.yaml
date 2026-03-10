@@ -1,0 +1,49 @@
+name: cpfl
+description: "Adapter para faturas CPFL."
+version: "1.0"
+
+column_mappings:
+  municipio:
+    aliases: ["municipio", "município", "cidade"]
+    required: false
+    fallback: "NAO INFORMADO"
+  uc:
+    aliases: ["uc", "unidade consumidora", "unidade_consumidora", "instalacao", "numero uc"]
+    required: false
+    fallback_mode: "index"
+  consumer_class:
+    aliases: ["classe", "subclasse", "grupo tarifario", "grupo_tarifario", "subgrupo", "modalidade tarifaria", "tipo cliente"]
+    required: false
+    fallback: "OUTROS"
+  reference_date:
+    aliases: ["reference_date", "data_referencia", "referencia", "competencia", "mes referencia"]
+    required: false
+    fallback_mode: "today_first_of_month"
+  consumption_kwh:
+    aliases: ["kwh_total_te", "itens_fatura_energia_kwh", "consumo_kwh", "energia_kwh", "kwh"]
+    required: true
+    parse_as: float
+  demand_kw:
+    aliases: ["demanda_kw", "demanda registrada", "demanda faturada", "demanda", "kw"]
+    required: false
+    fallback: 0.0
+    parse_as: float
+  source_file:
+    aliases: ["source_file", "arquivo_origem", "arquivo"]
+    required: false
+    fallback: "extraction_output"
+
+consumer_class_rules:
+  - pattern: "^ip$|iluminacao publica|^ip "
+    value: "IP"
+  - pattern: "a4|grupo a|alta tensao|\\bmt\\b"
+    value: "A4"
+  - pattern: "b3|grupo b|comercial"
+    value: "B3"
+  - default: "OUTROS"
+
+detection_hints:
+  column_keywords: ["cpfl"]
+  content_keywords: ["cpfl"]
+  column_signature: []
+  signature_score_boost: 1.5

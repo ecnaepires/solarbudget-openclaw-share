@@ -1,0 +1,31 @@
+# Python cache/artifacts
+__pycache__/
+**/__pycache__/
+*.py[cod]
+
+# Local environments and tooling
+.venv/
+.claude/
+
+# UI redesign snapshots
+backups/
+
+# Generated dashboard outputs
+outputs/
+output.xlsx
+data/outputs_extraction/**
+!data/outputs_extraction/.gitkeep
+!data/outputs_extraction/contract/
+!data/outputs_extraction/contract/.gitkeep
+!data/outputs_extraction/logs/
+!data/outputs_extraction/logs/.gitkeep
+
+# Local design/debug artifacts
+figma_capture_home.html
+figma_capture_probe.png
+figma_design_attempt2.txt
+figma_result.txt
+step_a_block_preview.txt
+
+# Python runtime noise
+*.log

@@ -1,0 +1,16 @@
+# Python cache/artifacts
+__pycache__/
+**/__pycache__/
+*.py[cod]
+
+# Local environments
+.venv/
+venv/
+.env
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+
+# Local secrets
+**/credentials.json

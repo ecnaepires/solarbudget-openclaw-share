@@ -1,0 +1,10 @@
+item_code,item_name,unit,base_qty_per_mwp,base_qty_per_kwp,base_qty_fixed,base_qty_per_string,unit_price_sem,unit_price_com,bdi_rule,scaling_rule
+0.1,Elaboracao de estudos e projetos - viabilidade,vb,,,1,,1000000,1258000,direct_com_bdi,fixed
+2.1,Limpeza mecanizada e prepara??o do terreno,m2,13333.33,,,,0.27,0.33,direct_com_bdi,per_mwp_ac
+3.1,Cercamento do terreno,m,84.4,,,,116.2,146.2,direct_com_bdi,per_mwp_ac
+4.1,Fundacoes das estruturas dos paineis,m,2470,,,,129.34,162.74,direct_com_bdi,per_mwp_ac
+7.3.1,Estrutura de suporte metalico,und,,1.69493,,,250.0,314.58,direct_com_bdi,per_kwp_dc
+8.1,Escavacao de valas externas,m,2075.22,,,,6.57,8.26,direct_com_bdi,per_mwp_ac
+9.1,Subestacao nao abrigada 2.500kVA,und,0.3333,,,,700000,880778.54,direct_com_bdi,per_mwp_ac
+9.2,Subestacao principal,und,,,1,,16000000,20128000,direct_com_bdi,fixed
+10.1,Engenheiro de obra,mes,,,8,,20000,25160,direct_com_bdi,fixed

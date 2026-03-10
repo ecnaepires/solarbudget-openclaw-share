@@ -1,0 +1,41 @@
+from pathlib import Path
+
+
+TEMPLATE_PATH = Path("template.xlsx")
+OUTPUT_PATH = Path("output.xlsx")
+EXCEL_MAP_PATH = Path("excel_map.yaml")
+
+CATALOG_DIR = Path("catalog")
+OUTPUTS_DIR = Path("outputs")
+ASSETS_DIR = Path("assets")
+AUDIT_LOG_PATH = OUTPUTS_DIR / "audit_log.csv"
+DATA_DIR = Path("data")
+INPUTS_PDFS_DIR = DATA_DIR / "inputs_pdfs"
+EXTRACTION_OUTPUTS_DIR = DATA_DIR / "outputs_extraction"
+EXTRACTION_LOGS_DIR = EXTRACTION_OUTPUTS_DIR / "logs"
+EXTRACTION_CONTRACT_DIR = EXTRACTION_OUTPUTS_DIR / "contract"
+EXTRACTION_CONTRACT_MASTER_PATH = EXTRACTION_CONTRACT_DIR / "contract_master.csv"
+
+MODULES_CSV_PATH = CATALOG_DIR / "modules.csv"
+INVERTERS_CSV_PATH = CATALOG_DIR / "inverters.csv"
+BOS_COSTS_CSV_PATH = CATALOG_DIR / "bos_costs.csv"
+PRICING_VERSIONS_CSV_PATH = CATALOG_DIR / "pricing_versions.csv"
+LOCATIONS_CSV_PATH = CATALOG_DIR / "municipios_ibge.csv"
+
+DC_AC_RATIO_MIN = 1.05
+DC_AC_RATIO_MAX = 1.40
+
+STC_TEMP_C = 25.0
+BRAZIL_MIN_AMBIENT_C = 0.0
+BRAZIL_MAX_AMBIENT_C = 45.0
+DEFAULT_HOT_CELL_DELTA_C = 20.0
+
+# Dimensioning defaults
+DEFAULT_HSP = 4.9
+DEFAULT_PR = 0.80
+DEFAULT_CAPEX_BRL_PER_MWP = 8_500_000.0
+DEFAULT_MONTHS_TO_USE = 13
+DEFAULT_FUSION_EXPECTED_MONTHS = 13
+
+# Log rotation
+MAX_EXTRACTION_LOG_FILES = 20

@@ -1,0 +1,36 @@
+# Python cache/artifacts
+__pycache__/
+**/__pycache__/
+*.py[cod]
+
+# Local environment
+.venv/
+venv/
+.env
+
+# Local secrets
+credentials.json
+
+# Local archives
+archive/
+
+# Municipality pipeline outputs
+municipios/*/extracted/
+municipios/*/master/
+municipios/*/dimensionamento/
+municipios/*/template/*_template_final.xlsx
+municipios/*/template/*_template_final.tsv
+municipios/*/template/*_final_model_filled.xlsx
+municipios/*/template/*_dimensionamento.xlsx
+municipios/*/template/*_dimensionamento.csv
+municipios/*/template/*_dimensionamento_model_filled.xlsx
+
+# Common ad-hoc generated files at project root
+*_master.csv
+*_master.tsv
+*_master_uc_x_mes.xlsx
+*_template_final.xlsx
+*_template_final.tsv
+*_12m.xlsx
+*_12m.tsv
+*_dimensionamento*.xlsx

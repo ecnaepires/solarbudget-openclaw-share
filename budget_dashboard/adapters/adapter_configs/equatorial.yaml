@@ -1,0 +1,41 @@
+name: equatorial
+description: "Adapter para extracoes do grupo Equatorial"
+version: "1.0"
+
+column_mappings:
+  municipio:
+    aliases: ["municipio", "municipio", "cidade", "localidade"]
+    fallback: "NAO INFORMADO"
+  uc:
+    aliases: ["uc", "instalacao", "unidade consumidora", "numero cliente"]
+    fallback_mode: index
+  consumer_class:
+    aliases: ["categoria", "classificacao_uc", "grupo tarifario", "subgrupo", "classe"]
+    fallback: "OUTROS"
+  reference_date:
+    aliases: ["referencia", "reference_date", "competencia", "mes referencia"]
+    fallback_mode: today_first_of_month
+  consumption_kwh:
+    aliases: ["kwh_total_te", "itens_fatura_energia_kwh", "consumo_kwh", "energia_kwh"]
+    required: true
+  demand_kw:
+    aliases: ["demanda_kw", "demanda registrada", "demanda faturada", "demanda contratada"]
+    fallback: 0.0
+  source_file:
+    aliases: ["source_file", "arquivo_origem", "pdf_source"]
+    fallback: "extraction_output"
+
+consumer_class_rules:
+  - pattern: "^ip$|iluminacao publica|^b4"
+    value: IP
+  - pattern: "a4|grupo a|alta tensao|\\bmt\\b|horosazonal"
+    value: A4
+  - pattern: "b3|grupo b|comercial|convencional"
+    value: B3
+  - default: OUTROS
+
+detection_hints:
+  column_keywords: ["equatorial"]
+  content_keywords: ["equatorial", "equatorial energia"]
+  column_signature: []
+  signature_score_boost: 1.5

@@ -1,0 +1,5 @@
+model,brand,kw,mppt_min_v,mppt_max_v,price_sem_bdi,price_com_bdi,supplier,notes,pricing_version
+SG350HX,Sungrow,350,500,1500,45000,56623.5,Integrator RJ,1500V utility string inverter,PV-2026Q1
+SUN2000-330KTL-H1,Huawei,330,500,1500,47000,59150,Distributor SP,Utility-scale string inverter,PV-2026Q1
+S6-GC-255K,Solis,255,500,1500,39000,49200,Distributor MG,Cost-focused option,PV-2026Q1
+CSI-350K-T40001-E,GoodWe,350,550,1500,44200,55500,Integrator NE,Alternative 350kW platform,PV-2026Q2

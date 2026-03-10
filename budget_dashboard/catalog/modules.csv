@@ -1,0 +1,6 @@
+model,brand,wp,vmp,voc,temp_coeff_voc,price_sem_bdi_per_kwp,price_com_bdi_per_kwp,supplier,notes,pricing_version
+DeepBlue 4.0 Pro JAM72D40 555W,JA Solar,555,41.9,50.1,-0.27,2720,3420,Distributor SP,"N-type mono, utility scale",PV-2026Q1
+Tiger Neo N-type 72HL4 585W,Jinko Solar,585,43.2,51.6,-0.29,2790.0,3525.0,Distributor MG,Commonly used in large plants,PV-2026Q1
+Vertex N TSM-NEG19RC.20 610W,Trina Solar,610,41.7,49.9,-0.28,2850.0,3600.0,Integrator RJ,Ground-mount utility projects,PV-2026Q1
+HiKu7 CS7N-665MS 665W,Canadian Solar,665,38.4,45.6,-0.27,2680.0,3380.0,Distributor PR,High power utility module,PV-2026Q1
+TOPHiKu6 CS6W-610TB 610W,Canadian Solar,610,41.8,49.8,-0.28,2815.0,3555.0,Distributor BA,Alt pricing scenario,PV-2026Q2
