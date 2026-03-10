@@ -1,0 +1,13 @@
+# Shared dependency list for the bundled dashboard + extraction workspace.
+# This is intentionally unpinned because the original projects did not include
+# a lockfile or a canonical requirements file.
+
+pandas
+streamlit
+openpyxl
+pdfplumber
+PyYAML
+tqdm
+plotly
+gspread
+google-auth

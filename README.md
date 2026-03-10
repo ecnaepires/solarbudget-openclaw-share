@@ -1,44 +1,99 @@
-# SolarBudget Share Bundle
+# SolarBudget Workspace Share
 
-This repository packages the full local workspace needed to run the SolarBudget dashboard together with the connected invoice extraction engine used by the dashboard.
+This repository is a shareable bundle of the two local projects that currently work together:
 
-## Included projects
+- `budget_dashboard/`: the main Streamlit dashboard for sizing, budgeting, exports, adapters, and workflow control.
+- `Project/estudo_faturas_municipios/`: the invoice extraction project used by the dashboard through `fatura_engine`.
 
-- `budget_dashboard/`: Streamlit dashboard, adapters, pricing/catalog data, export pipeline, UI, and services.
-- `Project/estudo_faturas_municipios/`: invoice extraction engine (`fatura_engine`), templates, municipality pipeline scripts, and tests.
+The layout is intentional. The dashboard resolves the extraction engine from a sibling path, so both folders are kept in one repository without changing runtime code.
 
-## Why the structure looks like this
+## Repository layout
 
-The dashboard currently resolves the extraction project from a sibling path:
+```text
+solarbudget-openclaw-share/
+  README.md
+  requirements-share.txt
+  budget_dashboard/
+  Project/
+    estudo_faturas_municipios/
+```
 
-- `budget_dashboard`
-- `Project/estudo_faturas_municipios`
+## What this bundle includes
 
-This repository preserves that layout so the integration works without code changes.
+- dashboard UI, services, adapters, catalogs, templates, and export logic
+- extraction engine code, regex/layout logic, tests, and municipality pipeline scripts
+- YAML adapter configs for multiple distributors
+- templates and sample test assets needed by the current workflow
 
-## What is intentionally excluded from version control
+## What is intentionally excluded
+
+These were kept out of version control on purpose:
 
 - virtual environments
 - Python cache files
 - local backups
-- generated dashboard outputs and logs
-- local extraction archives and derived municipality output folders
-- `credentials.json` and other local-only secrets
+- generated dashboard outputs and extraction logs
+- extracted municipality output folders and local archives
+- local secrets such as `credentials.json`
 
-## Run locally
+If OpenClaw needs credentials or generated outputs, they must be supplied separately.
 
-1. Create and activate a Python environment for `budget_dashboard`.
-2. Install the required dependencies used by the dashboard and extraction project.
-3. From `budget_dashboard`, run:
+## Quick start
+
+1. Clone the repository.
+2. Create and activate a Python virtual environment at the repository root or inside `budget_dashboard/`.
+3. Install dependencies:
 
 ```powershell
+pip install -r requirements-share.txt
+```
+
+4. Start the dashboard:
+
+```powershell
+cd budget_dashboard
 streamlit run app.py
 ```
 
-4. If the dashboard needs the extraction engine, keep the sibling folder structure intact.
+5. Keep the repository structure unchanged so the dashboard can import the extraction project from:
+
+```text
+../Project/estudo_faturas_municipios
+```
+
+## Runtime notes
+
+- The dashboard dynamically imports `fatura_engine.extractors.extract_pdf` from the extraction project.
+- `budget_dashboard/services/extraction_bridge_service.py` assumes the sibling extraction path exists.
+- Streamlit config is stored in `budget_dashboard/.streamlit/config.toml`.
+- Dashboard-generated outputs are recreated locally and are not committed.
+
+## Dependency notes
+
+The repository did not originally contain a locked dependency file. A practical shared install list is provided in `requirements-share.txt` for the combined workspace.
+
+Optional integrations:
+
+- `gspread` and `google-auth` are only needed for scripts that talk to Google services.
+- `plotly` is used by the extraction project's Streamlit app, not the main dashboard.
+
+## Suggested first checks after clone
+
+From `budget_dashboard/`:
+
+```powershell
+python -m py_compile app.py ui\style.py
+streamlit run app.py
+```
+
+From `Project/estudo_faturas_municipios/`:
+
+```powershell
+python -m unittest discover -s tests
+```
 
 ## Notes for OpenClaw
 
-- The dashboard imports the extraction engine dynamically from `Project/estudo_faturas_municipios`.
-- Generated outputs are not committed; they should be recreated locally after clone.
-- Local secret files are excluded and must be supplied separately if required.
+- The dashboard and extraction engine are coupled by directory layout, not by published package install.
+- The share bundle is designed for inspection, collaboration, and local execution, not as a polished package release.
+- If OpenClaw wants this split into cleaner independent repos or converted into a single proper Python workspace, that should be treated as a separate refactor.
