@@ -1,0 +1,22 @@
+[
+  {
+    "filename": "works-celesc-1.pdf",
+    "expected_status": "works",
+    "distributor": "CELESC",
+    "municipality": "example-municipality",
+    "notes": [
+      "baseline passing case",
+      "all major fields present"
+    ]
+  },
+  {
+    "filename": "fails-enel-a4-1.pdf",
+    "expected_status": "fails",
+    "distributor": "ENEL",
+    "municipality": "example-municipality",
+    "notes": [
+      "A4 HP/FHP parsing breaks",
+      "reference or category normalization is wrong"
+    ]
+  }
+]

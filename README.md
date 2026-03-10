@@ -97,3 +97,4 @@ python -m unittest discover -s tests
 - The dashboard and extraction engine are coupled by directory layout, not by published package install.
 - The share bundle is designed for inspection, collaboration, and local execution, not as a polished package release.
 - If OpenClaw wants this split into cleaner independent repos or converted into a single proper Python workspace, that should be treated as a separate refactor.
+- See `docs/openclaw-handoff.md` for missing artifacts, runtime exclusions, and the recommended PDF fixture pack structure.
