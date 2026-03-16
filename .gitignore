@@ -2,6 +2,7 @@
 __pycache__/
 **/__pycache__/
 *.py[cod]
+*.pyo
 
 # Local environments
 .venv/
@@ -11,6 +12,25 @@ venv/
 # OS/editor noise
 .DS_Store
 Thumbs.db
+*.swp
 
 # Local secrets
 **/credentials.json
+
+# Test runner cache
+.pytest_cache/
+**/.pytest_cache/
+.coverage
+htmlcov/
+
+# Dashboard: generated outputs (budget files, audit logs)
+budget_dashboard/outputs/
+
+# Dashboard: user-uploaded invoice PDFs (never commit real bills)
+budget_dashboard/data/inputs_pdfs/*.pdf
+
+# Dashboard: extraction run outputs (large, machine-generated)
+budget_dashboard/data/outputs_extraction/*/
+# Keep top-level README and contract master placeholder
+!budget_dashboard/data/outputs_extraction/contract/
+!budget_dashboard/data/outputs_extraction/logs/
