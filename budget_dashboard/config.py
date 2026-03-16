@@ -39,3 +39,31 @@ DEFAULT_FUSION_EXPECTED_MONTHS = 13
 
 # Log rotation
 MAX_EXTRACTION_LOG_FILES = 20
+
+# Cell address map for the dimensionamento Excel template sheet.
+# Update these if the template layout changes — do not hardcode addresses elsewhere.
+DIMENSIONAMENTO_CELL_MAP: dict[str, str] = {
+    "consumo_b3": "D5",
+    "consumo_b4a": "D13",
+    "consumo_a4_hp": "D24",
+    "consumo_a4_fhp": "D32",
+    "kwp_b3": "D9",
+    "kwp_b4a": "D17",
+    "kwp_a4_hp": "D29",
+    "kwp_a4_fhp": "D36",
+    "total_kwp": "N8",
+    "hsp": "D6",
+    "performance_ratio": "D7",
+    "days_per_month": "D8",
+    "a4_hp_factor": "D25",
+    "capex_brl_per_mwp": "N19",
+    "investment_brl": "N24",
+    "energy_cost_month": "N16",
+    "payback_months": "N26",
+}
+
+# Estimated cost benchmark rates used in export analytics
+# Update these when tariff baselines change — they are NOT used in final budget calculations
+DEFAULT_ENERGY_RATE_BRL_KWH = 0.85
+DEFAULT_DEMAND_RATE_BRL_KW = 42.0
+DEFAULT_PEAK_THRESHOLD_PCT = 25.0

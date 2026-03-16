@@ -14,6 +14,7 @@ import pandas as pd
 import streamlit as st
 from openpyxl import load_workbook
 
+from config import DEFAULT_DEMAND_RATE_BRL_KW, DEFAULT_ENERGY_RATE_BRL_KWH, DEFAULT_PEAK_THRESHOLD_PCT
 from excel_engine import apply_dynamic_totals
 from ui.helpers import build_excel_bytes_from_frames
 from ui.numeric_utils import (
@@ -135,9 +136,9 @@ def _build_original_extraction_frames(raw_df: pd.DataFrame) -> Dict[str, pd.Data
     else:
         displayed_df["reference_date"] = pd.to_datetime(displayed_df["reference_date"], errors="coerce")
 
-    energy_rate_rs_kwh = 0.85
-    extra_demand_rate_rs_kw = 42.0
-    peak_threshold_pct = 25.0
+    energy_rate_rs_kwh = DEFAULT_ENERGY_RATE_BRL_KWH
+    extra_demand_rate_rs_kw = DEFAULT_DEMAND_RATE_BRL_KW
+    peak_threshold_pct = DEFAULT_PEAK_THRESHOLD_PCT
 
     enriched_df = _add_estimated_cost_columns(
         displayed_df, energy_rate_rs_kwh=energy_rate_rs_kwh, extra_demand_rate_rs_kw=extra_demand_rate_rs_kw,

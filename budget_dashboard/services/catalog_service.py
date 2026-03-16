@@ -229,7 +229,6 @@ def upsert_module_catalog_row(module_row: dict) -> str:
 
 def upsert_inverter_catalog_row(inverter_row: dict) -> str:
     return _upsert_catalog_row(INVERTERS_CSV, INVERTER_COLUMNS, inverter_row)
-    return action
 
 
 def filter_catalog_rows(

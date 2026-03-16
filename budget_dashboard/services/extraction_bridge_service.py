@@ -14,6 +14,8 @@ import json
 import pandas as pd
 from openpyxl import load_workbook
 
+from config import DIMENSIONAMENTO_CELL_MAP
+
 
 def _normalize_text(value: str) -> str:
     text = unicodedata.normalize("NFKD", str(value))
@@ -109,15 +111,12 @@ def _attach_page_provenance(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def default_extraction_root() -> Path:
-    candidates = [
-        Path(r"C:\Users\Lenovo 02\Documents\Program_Projects\Project\estudo_faturas_municipios"),
-        Path(r"C:\Users\Lenovo 02\Documents\program_projects\Project\estudo_faturas_municipios"),
-        (Path.cwd().parent / "Project" / "estudo_faturas_municipios").resolve(),
-    ]
-    for candidate in candidates:
-        if candidate.exists():
-            return candidate.resolve()
-    return candidates[0]
+    # Resolve relative to this file: services/ -> budget_dashboard/ -> repo root -> Project/
+    repo_root = Path(__file__).resolve().parent.parent.parent
+    candidate = (repo_root / "Project" / "estudo_faturas_municipios").resolve()
+    if candidate.exists():
+        return candidate
+    return candidate
 
 
 def scan_dimensionamento_sources(root_path: Path, limit: int = 200) -> List[dict]:
@@ -290,35 +289,36 @@ def _parse_dimensionamento_template_workbook(file_path: Path) -> List[dict]:
         if dim_sheet is None:
             return []
 
-        consumo_b3 = _sheet_cell_float(dim_sheet, "D5") or 0.0
-        consumo_b4a = _sheet_cell_float(dim_sheet, "D13") or 0.0
-        consumo_a4_hp = _sheet_cell_float(dim_sheet, "D24") or 0.0
-        consumo_a4_fhp = _sheet_cell_float(dim_sheet, "D32") or 0.0
+        _c = DIMENSIONAMENTO_CELL_MAP
+        consumo_b3 = _sheet_cell_float(dim_sheet, _c["consumo_b3"]) or 0.0
+        consumo_b4a = _sheet_cell_float(dim_sheet, _c["consumo_b4a"]) or 0.0
+        consumo_a4_hp = _sheet_cell_float(dim_sheet, _c["consumo_a4_hp"]) or 0.0
+        consumo_a4_fhp = _sheet_cell_float(dim_sheet, _c["consumo_a4_fhp"]) or 0.0
 
-        kwp_b3 = _sheet_cell_float(dim_sheet, "D9") or 0.0
-        kwp_b4a = _sheet_cell_float(dim_sheet, "D17") or 0.0
-        kwp_a4_hp = _sheet_cell_float(dim_sheet, "D29") or 0.0
-        kwp_a4_fhp = _sheet_cell_float(dim_sheet, "D36") or 0.0
+        kwp_b3 = _sheet_cell_float(dim_sheet, _c["kwp_b3"]) or 0.0
+        kwp_b4a = _sheet_cell_float(dim_sheet, _c["kwp_b4a"]) or 0.0
+        kwp_a4_hp = _sheet_cell_float(dim_sheet, _c["kwp_a4_hp"]) or 0.0
+        kwp_a4_fhp = _sheet_cell_float(dim_sheet, _c["kwp_a4_fhp"]) or 0.0
 
-        total_kwp = _sheet_cell_float(dim_sheet, "N8")
+        total_kwp = _sheet_cell_float(dim_sheet, _c["total_kwp"])
         if total_kwp is None:
             total_kwp = kwp_b3 + kwp_b4a + kwp_a4_hp + kwp_a4_fhp
         total_mwp = float(total_kwp) / 1000.0
 
-        hsp = _sheet_cell_float(dim_sheet, "D6")
-        performance_ratio = _sheet_cell_float(dim_sheet, "D7")
-        days_per_month = _sheet_cell_float(dim_sheet, "D8")
-        a4_hp_factor = _sheet_cell_float(dim_sheet, "D25")
-        capex_brl_per_mwp = _sheet_cell_float(dim_sheet, "N19")
+        hsp = _sheet_cell_float(dim_sheet, _c["hsp"])
+        performance_ratio = _sheet_cell_float(dim_sheet, _c["performance_ratio"])
+        days_per_month = _sheet_cell_float(dim_sheet, _c["days_per_month"])
+        a4_hp_factor = _sheet_cell_float(dim_sheet, _c["a4_hp_factor"])
+        capex_brl_per_mwp = _sheet_cell_float(dim_sheet, _c["capex_brl_per_mwp"])
 
-        investment_brl = _sheet_cell_float(dim_sheet, "N24")
+        investment_brl = _sheet_cell_float(dim_sheet, _c["investment_brl"])
         if investment_brl is None and capex_brl_per_mwp is not None:
             investment_brl = total_mwp * float(capex_brl_per_mwp)
         if investment_brl is None:
             investment_brl = 0.0
 
-        energy_cost_month = _sheet_cell_float(dim_sheet, "N16")
-        payback_months = _sheet_cell_float(dim_sheet, "N26")
+        energy_cost_month = _sheet_cell_float(dim_sheet, _c["energy_cost_month"])
+        payback_months = _sheet_cell_float(dim_sheet, _c["payback_months"])
 
         monthly_energy_cost_brl: dict[str, float | None] = {"TOTAL": energy_cost_month}
         tariff_map = {"B3": None, "B4A": None, "A4_HP": None, "A4_FHP": None}
