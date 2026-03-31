@@ -38,41 +38,50 @@ def _write_csv(path: Path, rows: List[dict]) -> None:
             writer.writerow({column: row.get(column, "") for column in LOCATION_COLUMNS})
 
 
-def fetch_municipalities_from_ibge() -> List[dict]:
-    with urlopen(IBGE_MUNICIPALITIES_URL, timeout=45) as response:
-        raw_content = response.read()
-        encoding = str(response.headers.get("Content-Encoding", "")).lower()
-        if encoding == "gzip" or raw_content[:2] == b"\x1f\x8b":
-            raw_content = gzip.decompress(raw_content)
-        payload = json.loads(raw_content.decode("utf-8"))
+def fetch_municipalities_from_ibge(*, timeout: int = 10, retries: int = 1) -> List[dict]:
+    """Fetch municipalities from IBGE API with timeout and single retry."""
+    last_exc: Exception = OSError("No fetch attempted")
+    for _attempt in range(retries + 1):
+        try:
+            with urlopen(IBGE_MUNICIPALITIES_URL, timeout=timeout) as response:
+                raw_content = response.read()
+                encoding = str(response.headers.get("Content-Encoding", "")).lower()
+                if encoding == "gzip" or raw_content[:2] == b"\x1f\x8b":
+                    raw_content = gzip.decompress(raw_content)
+                payload = json.loads(raw_content.decode("utf-8"))
 
-    rows: List[dict] = []
-    for item in payload:
-        uf_data = {}
-        micro = item.get("microrregiao")
-        if isinstance(micro, dict):
-            meso = micro.get("mesorregiao")
-            if isinstance(meso, dict):
-                uf_data = meso.get("UF") or {}
+            rows: List[dict] = []
+            for item in payload:
+                uf_data = {}
+                micro = item.get("microrregiao")
+                if isinstance(micro, dict):
+                    meso = micro.get("mesorregiao")
+                    if isinstance(meso, dict):
+                        uf_data = meso.get("UF") or {}
 
-        if not uf_data:
-            reg_imediata = item.get("regiao-imediata") or {}
-            reg_inter = reg_imediata.get("regiao-intermediaria") or {}
-            uf_data = reg_inter.get("UF") or {}
+                if not uf_data:
+                    reg_imediata = item.get("regiao-imediata") or {}
+                    reg_inter = reg_imediata.get("regiao-intermediaria") or {}
+                    uf_data = reg_inter.get("UF") or {}
 
-        city_name = str(item.get("nome", "")).strip()
-        row = {
-            "ibge_code": str(item.get("id", "")),
-            "city": city_name,
-            "state_uf": str(uf_data.get("sigla", "")).strip().upper(),
-            "state_name": str(uf_data.get("nome", "")).strip(),
-            "city_search": normalize_search_text(city_name),
-        }
-        if row["city"] and row["state_uf"]:
-            rows.append(row)
+                city_name = str(item.get("nome", "")).strip()
+                row = {
+                    "ibge_code": str(item.get("id", "")),
+                    "city": city_name,
+                    "state_uf": str(uf_data.get("sigla", "")).strip().upper(),
+                    "state_name": str(uf_data.get("nome", "")).strip(),
+                    "city_search": normalize_search_text(city_name),
+                }
+                if row["city"] and row["state_uf"]:
+                    rows.append(row)
 
-    rows.sort(key=lambda row: (row["state_uf"], row["city_search"]))
-    return rows
+            rows.sort(key=lambda r: (r["state_uf"], r["city_search"]))
+            return rows
+
+        except (URLError, TimeoutError, OSError) as exc:
+            last_exc = exc
+
+    raise last_exc
 
 
 def ensure_locations_catalog(path: Path = LOCATIONS_CSV_PATH) -> Tuple[bool, str]:

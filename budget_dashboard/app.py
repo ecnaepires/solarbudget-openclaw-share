@@ -910,9 +910,9 @@ if project["wizard_step"] == "A":
                         if tmp_upload_path:
                             try:
                                 Path(tmp_upload_path).unlink(missing_ok=True)
-                            except Exception:
+                            except OSError:
                                 pass
-            except Exception as exc:
+            except (OSError, ValueError, KeyError) as exc:
                 uploaded_records = []
                 st.error(f"Nao foi possivel ler o arquivo enviado: {exc}")
 
@@ -992,7 +992,7 @@ if project["wizard_step"] == "A":
                         tariff_a4_hp_rs_kwh=tariff_a4_hp_param,
                         tariff_a4_fhp_rs_kwh=tariff_a4_fhp_param,
                     )
-            except Exception as exc:
+            except (OSError, ValueError, KeyError) as exc:
                 st.error(f"Nao foi possivel ler o arquivo selecionado: {exc}")
                 extracted_records = []
 
@@ -1009,7 +1009,7 @@ if project["wizard_step"] == "A":
                         inferred_tariffs_source = infer_tariffs_from_invoice_raw(loaded_df)
                         if inferred_tariffs_source:
                             st.session_state["pending_tariff_autofill"] = inferred_tariffs_source
-                except Exception:
+                except (OSError, ValueError) as _:
                     pass
                 record_labels = [
                     f"{rec['cenario']} | {rec['mwp']:.3f} {add_abbreviation_meanings('MWp')} | {rec['municipio'] or 'Municipio N/A'}"
