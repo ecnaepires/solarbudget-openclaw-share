@@ -122,6 +122,7 @@ def apply_style(theme: str = "forest") -> None:
   --radius-md: 18px;
   --radius-lg: 24px;
   --content-max: 1320px;
+  --transition: 0.18s ease;
 }}
 
 html, body, [class*="css"], [data-testid="stAppViewContainer"], [data-testid="stSidebar"] {{
@@ -463,6 +464,16 @@ a {{
   margin-top: 0.45rem;
   color: var(--text-soft);
   font-size: 0.8rem;
+}}
+
+.dash-stat {{
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}}
+
+.dash-stat:hover {{
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-strong);
 }}
 
 .status-badge {{
@@ -894,6 +905,40 @@ code, pre {{
   font-weight: 600;
 }}
 
+.empty-state {{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2.75rem 1.5rem;
+  text-align: center;
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-alt);
+  min-height: 160px;
+}}
+
+.empty-state-icon {{
+  font-size: 2.25rem;
+  opacity: 0.45;
+  line-height: 1;
+}}
+
+.empty-state-title {{
+  color: var(--text-soft);
+  font-size: 0.97rem;
+  font-weight: 700;
+  margin: 0;
+}}
+
+.empty-state-sub {{
+  color: var(--muted);
+  font-size: 0.84rem;
+  max-width: 340px;
+  margin: 0;
+}}
+
 @media (max-width: 960px) {{
   .main .block-container {{
     padding-left: 1rem;
@@ -1081,5 +1126,17 @@ def render_footer(company: str = "SolarBudget") -> None:
   </div>
 </div>
         """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_empty_state(icon: str, title: str, sub: str = "") -> None:
+    sub_html = f'<p class="empty-state-sub">{escape(sub)}</p>' if sub else ""
+    st.markdown(
+        f'<div class="empty-state">'
+        f'<div class="empty-state-icon">{icon}</div>'
+        f'<p class="empty-state-title">{escape(title)}</p>'
+        f"{sub_html}"
+        "</div>",
         unsafe_allow_html=True,
     )
