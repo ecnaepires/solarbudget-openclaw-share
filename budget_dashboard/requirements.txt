@@ -1,0 +1,9 @@
+streamlit
+pandas
+openpyxl
+pdfplumber
+PyYAML
+tqdm
+plotly
+gspread
+google-auth
